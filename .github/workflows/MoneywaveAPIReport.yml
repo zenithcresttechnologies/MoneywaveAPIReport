@@ -23,12 +23,12 @@ jobs:
        npm install -g newman-reporter-htmlextra
     # Make directory to upload the test results
     - name: Make Directory for results
-      run: mkdir -p MoneywaveResults
+      run: mkdir -p MoneywaveTestReport
 
 
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
-      run: newman run MoneyWave.postman_collection.json -e Moneywave.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+      run: newman run MoneyWave.postman_collection.json -e Moneywave.postman_environment.json -r htmlextra --reporter-htmlextra-export MoneywaveTestReport/htmlreport.html --reporter-htmlextra-darkTheme  > MoneywaveTestReport/runreport1.html
 
     # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
