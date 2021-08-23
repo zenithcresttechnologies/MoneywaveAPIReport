@@ -1,0 +1,14 @@
+name: "Moneywave Test"
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image:  postman/newman
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        
+      - name: Run API Tests
+        run:  newman run MoneyWave.postman_collection.json -e Moneywave.postman_environment.json
