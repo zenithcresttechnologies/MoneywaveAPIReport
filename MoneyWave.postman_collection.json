@@ -1326,6 +1326,69 @@
 							"response": []
 						},
 						{
+							"name": "Bank and Destination - Resolve Account - Successful NG Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status returned is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"});",
+											"",
+											"pm.test(\"Account Information Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).not.empty;",
+											"});",
+											"pm.test(\"account name fetched\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"account_name\");",
+											"});",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"account_number\": \"254721394987\",\n  \"bank_code\": \"MPS\",\n  \"currency\": \"KES\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/resolve/account",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"resolve",
+										"account"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Bank and Destination -  Resolve Account - Successful GH",
 							"event": [
 								{
@@ -1367,7 +1430,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"account_number\": \"\",\n  \"bank_code\": \"\",\n  \"currency\": \"GHC\"\n}",
+									"raw": "{\n  \"account_number\": \"0381626302511\",\n  \"bank_code\": \"300329\",\n  \"currency\": \"GHS\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1715,24 +1778,23 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Status code is 400\", function () {",
-											"    pm.response.to.have.status(400);",
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
 											"});",
 											"",
-											"pm.test(\"Status returned is error\", function () {",
+											"pm.test(\"Status returned is success\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
 											"});",
 											"",
-											"pm.test(\"Correct message\", function () {",
+											"pm.test(\"Account Information Displayed\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.msg).to.eql(\"\");",
+											"    pm.expect(jsonData.data).not.empty;",
+											"});",
+											"pm.test(\"account name fetched\", function () {",
+											"    pm.expect(pm.response.text()).to.include(\"account_name\");",
 											"});",
 											"",
-											"pm.test(\"Correct code\", function () {",
-											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.code).to.eql(\"\");",
-											"});",
 											"",
 											""
 										],
@@ -1815,7 +1877,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"account_number\": \"0690000031\",\n  \"bank_code\": \"044\",\n  \"currency\": \"EUR\"\n}",
+									"raw": "{\n  \"account_number\": \"0690000034\",\n  \"bank_code\": \"044\",\n  \"currency\": \"EUR\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1879,7 +1941,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"account_number\": \"0690000031\",\n  \"bank_code\": \"044\",\n  \"currency\": \"XXX\"\n}",
+									"raw": "{\n  \"account_number\": \"0690000031\",\n  \"bank_code\": \"044\",\n  \"currency\": \"XX555X\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2027,6 +2089,71 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Bank and Destination - Resolve Account - Check Bank Downtime",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status returned is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"});",
+											"",
+											"pm.test(\"Bank Status Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).not.empty;",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"account_number\": \"0690000034\",\n  \"bank_code\": \"044\",\n  \"currency\": \"NGN\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/banks/resolve/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"banks",
+										"resolve",
+										"status"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -2035,6 +2162,149 @@
 					"item": [
 						{
 							"name": "Single Payout - Disburse Single - Sucessful",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Status is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"});",
+											"pm.test(\"Payout is disbursed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data.data.responsemessage).to.equal(\"Successful\")",
+											"});",
+											"",
+											"pm.test(\"Response Code  is 00\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data.data.responsecode).to.equal(\"00\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"lock\" : \"1234\",\n  \"bankcode\": \"044\",\n  \"accountNumber\": \"0690000034\",\n  \"currency\": \"NGN\",\n  \"senderName\": \"jpttry\",\n  \"amount\": \"2\",\n  \"narration\": \"Equipments\",\n  \"ref\":\"{{$randomInt}}\"\n}\n  ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Sucessful Duplicate",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Status is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.code).to.eql(\"POSSIBLE_DUPLICATE\");",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"lock\" : \"1234\",\n  \"bankcode\": \"044\",\n  \"accountNumber\": \"0690000034\",\n  \"currency\": \"NGN\",\n  \"senderName\": \"jpttry\",\n  \"amount\": \"2\",\n  \"narration\": \"Equipments\"\n}\n  ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Sucessful MPesa",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"lock\" : \"1234\",\n  \"bankcode\": \"MPS\",\n  \"accountNumber\": \"254721394987\",\n  \"currency\": \"KES\",\n  \"senderName\": \"jpttry\",\n  \"amount\": \"2\",\n  \"narration\": \"Equipments\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Sucessful MTN Ghana",
 							"request": {
 								"method": "POST",
 								"header": [
@@ -2044,6 +2314,624 @@
 										"type": "text"
 									}
 								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Same Ref, Different Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Inactive Balance",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Insufficient Balance",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Status is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"pm.test(\"Insufficient Message Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.equal(\"Insufficient funds for Transaction\")",
+											"});",
+											"",
+											"pm.test(\"IINSUFFICIENT_FUNDS Code Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.code).to.equal(\"INSUFFICIENT_FUNDS\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"lock\" : \"1234\",\n  \"bankcode\": \"044\",\n  \"accountNumber\": \"0690000034\",\n  \"currency\": \"NGN\",\n  \"senderName\": \"jpttry\",\n  \"amount\": \"20000\",\n  \"narration\": \"Equipments\",\n  \"ref\":\"{{$randomInt}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Exceed Limit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"pm.test(\"Status is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"pm.test(\"Insufficient Message Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.equal(\"Disburse Amount has exceeded Limits\")",
+											"});",
+											"",
+											"pm.test(\"IINSUFFICIENT_FUNDS Code Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.code).to.equal(\"LIMIT_EXCEEDED\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"lock\" : \"1234\",\n  \"bankcode\": \"044\",\n  \"accountNumber\": \"0690000034\",\n  \"currency\": \"NGN\",\n  \"senderName\": \"jpttry\",\n  \"amount\": \"200000\",\n  \"narration\": \"Equipments\",\n  \"ref\":\"{{$randomInt}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No Authorization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"pm.test(\"status is present\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"error\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"code is present\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"UNAUTHORIZED_ACCESS\");\r",
+											"});\r",
+											"pm.test(\"message is present\", function () {\r",
+											"    pm.expect(pm.response.text()).to.include(\"Unauthorized access\");\r",
+											"});\r",
+											"\r",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"ref\": \"SD252849857\",\r\n\t\"amount\": \"525000\",\r\n\t\"currency\": \"NGN\",\r\n\t\"bankcode\": \"044\",\r\n\t\"accountNumber\": \"0600000004\",\r\n\t\"senderName\": \"ABCompany\",\r\n\t\"lock\": \"walpassword\",\r\n\t\"narration\": \"Equipments\",\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Invalid Authorization",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Expired Authorization",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No ref",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRocml2ZSIsImFjY291bnROdW1iZXIiOiIwNjkwMDAwMDAiLCJiYW5rQ29kZSI6IjMwNyIsImlzQWN0aXZlIjp0cnVlLCJlbnZpcm9ubWVudCI6ImxpdmUiLCJjYW5fZ29saXZlIjp0cnVlLCJjb3VudGRvd24iOm51bGwsImNvbXBsaWFuY2UiOjgsImNvZGUiOiJNTDU4MCIsInBvc0lkIjoiMTE0NjMiLCJlYmlsbElkIjoiTVRGVyIsImlwIjpudWxsLCJjcmVhdGVkQXQiOiIyMDE2LTA5LTE2VDEzOjQ5OjIzLjAwMFoiLCJ1cGRhdGVkQXQiOiIyMDE3LTA3LTE5VDE0OjA2OjM2LjAwMFoiLCJkZWxldGVkQXQiOm51bGwsImlhdCI6MTUzMDIxMTc4MiwiZXhwIjoxNTMwMjE4OTgyfQ.gQDK03I9Jc0dO21RxsZjG0k4Px0NzTk4tRnkbV5VciU",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"ref\": \"\",\r\n\t\"amount\": \"525000\",\r\n\t\"currency\": \"NGN\",\r\n\t\"bankcode\": \"044\",\r\n\t\"accountNumber\": \"0600000004\",\r\n\t\"senderName\": \"ABCompany\",\r\n\t\"lock\": \"walpassword\",\r\n\t\"narration\": \"Equipments\",\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No ref tag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\r\n\t\"amount\": \"525000\",\r\n\t\"currency\": \"NGN\",\r\n\t\"bankcode\": \"044\",\r\n\t\"accountNumber\": \"0600000004\",\r\n\t\"senderName\": \"ABCompany\",\r\n\t\"lock\": \"walpassword\",\r\n\t\"narration\": \"Equipments\",\r\n}"
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Invalid Ref",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No Amount Tag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Zero Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Decimal Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Non-Numeric Amount",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No Currency",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - No Currency Tag",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Invalid Currency",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Single Payout - Disburse Single - Invalid Currency Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{url}}/v1/disburse",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Mass Payout - Disburse Batch",
+					"item": [
+						{
+							"name": "Single Payout - Disburse Single - Sucessful",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"currency\": \"NGN\",\n    \"lock\": \"pass22\",\n    \"senderName\": \"Company\",\n    \"ref\": \"TRT-19-3\",\n    \"name\": \"Batch 4\",\n    \"instantQueue\": true,\n    \"recipients\": [\n        {\n            \"accountNumber\": \"0043480060\",\n            \"bankcode\": \"058\",\n            \"amount\": \"5.93833939\",\n            \"ref\": \"jadsf124\",\n            \"narration\": \"111\",\n            \"x_transferred_amount\": \"5\",\n            \"x_sender_name\": \"john\",\n            \"x_sender_location\": \"lagos\",\n            \"x_purpose\": \"test\",\n            \"x_recipient_name\": \"john\",\n            \"x_recipient_address\": \"lagos\"\n        },\n        {\n            \"accountNumber\": \"2009843444\",\n            \"bankcode\": \"057\",\n            \"amount\": \"6.12345\",\n            \"ref\": \"jadsf125\",\n            \"x_transferred_amount\": \"5\",\n            \"x_sender_name\": \"john\",\n            \"x_sender_location\": \"lagos\",\n            \"x_purpose\": \"test\",\n            \"x_recipient_name\": \"john\",\n            \"x_recipient_address\": \"lagos\"\n        }\n    ]\n}\n  ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/disburse",
 									"host": [
@@ -2591,6 +3479,26 @@
 							},
 							"response": []
 						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
 					]
 				},
 				{
@@ -2602,7 +3510,6 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
 											"pm.test(\"Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
@@ -2613,9 +3520,10 @@
 											"});\r",
 											"pm.test(\"Payout is disbursed\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain(\"completed\")\r",
+											"    pm.expect(jsonData.data.status).not.empty\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2630,7 +3538,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"ref\": \"FLWT001292180\"\r\n}",
+									"raw": "{\r\n    \"ref\": \"TTMW007440889\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2657,20 +3565,20 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
 											"});\r",
-											"pm.test(\"Status is success\", function () {\r",
+											"pm.test(\"Status is error\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
-											"pm.test(\"Payout is disbursed\", function () {\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain(\"completed\")\r",
+											"    pm.expect(jsonData.message).to.equal(\"Unauthorized access.\")\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2679,13 +3587,13 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
+										"value": "",
 										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "\r\n{\r\n \"ref\": \"15260407UAKFY6K6Y\"\r\n}",
+									"raw": "{\r\n    \"ref\": \"TTMW007440889\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2712,20 +3620,20 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
 											"});\r",
-											"pm.test(\"Status is success\", function () {\r",
+											"pm.test(\"Status is error\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
-											"pm.test(\"Payout is disbursed\", function () {\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain(\"completed\")\r",
+											"    pm.expect(jsonData.message).to.equal(\"Invalid or expired token\")\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2734,10 +3642,19 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
+										"value": "jhchjhckhckhvjuv ",
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"TTMW007440889\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/disburse/status",
 									"host": [
@@ -2758,20 +3675,20 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
 											"});\r",
-											"pm.test(\"Status is success\", function () {\r",
+											"pm.test(\"Status is error\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
-											"pm.test(\"Payout is disbursed\", function () {\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain(\"completed\")\r",
+											"    pm.expect(jsonData.message).to.equal(\"Invalid or expired token\")\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2780,10 +3697,19 @@
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRocml2ZSIsImFjY291bnROdW1iZXIiOiIwNjkwMDAwMDAiLCJiYW5rQ29kZSI6IjMwNyIsImlzQWN0aXZlIjp0cnVlLCJlbnZpcm9ubWVudCI6ImxpdmUiLCJjYW5fZ29saXZlIjp0cnVlLCJjb3VudGRvd24iOm51bGwsImNvbXBsaWFuY2UiOjAsImNvZGUiOiJNMSIsInBvc0lkIjoiUDEiLCJlYmlsbElkIjpudWxsLCJpcCI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxNi0wOS0xNlQxMzo0OToyMy4wMDBaIiwidXBkYXRlZEF0IjoiMjAxOC0wMi0wOVQxNDozMDo0Ny4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJpYXQiOjE1MzAwMzA2OTcsImV4cCI6MTUzMDAzNzg5N30.zsMrcFJPpg2-H_b3Hr3Rn7pqaQhdYSGTpxO8wPR6TUg",
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"TTMW007440889\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/disburse/status",
 									"host": [
@@ -2804,20 +3730,20 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
-											"pm.test(\"Status is success\", function () {\r",
+											"pm.test(\"Status is errro\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
-											"pm.test(\"Payout is disbursed\", function () {\r",
+											"pm.test(\"Appropriate Code Displayed\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain(\"completed\")\r",
+											"    pm.expect(jsonData.code).to.equal(\"INVALID_REF\")\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2830,6 +3756,15 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/disburse/status",
 									"host": [
@@ -2850,20 +3785,20 @@
 								{
 									"listen": "test",
 									"script": {
-										"type": "text/javascript",
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
-											"pm.test(\"Status is success\", function () {\r",
+											"pm.test(\"Status is error\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
 											"pm.test(\"Payout is disbursed\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data).to.contain( )\r",
+											"    pm.expect(jsonData.data).to.contain( \"Disburse Transaction not Found\")\r",
 											"});"
-										]
+										],
+										"type": "text/javascript"
 									}
 								}
 							],
@@ -2900,10 +3835,6 @@
 							"response": []
 						}
 					]
-				},
-				{
-					"name": "Mass Payout - Disburse Batch",
-					"item": []
 				}
 			]
 		},
@@ -2951,7 +3882,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"NairaWallet\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"65\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomUserName}}\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"{{$randomPhoneNumber}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2972,7 +3903,7 @@
 							"response": []
 						},
 						{
-							"name": "Create Wallet - MultiWallet Same Currency",
+							"name": "Create Wallet - MultiWallet Same URef",
 							"event": [
 								{
 									"listen": "test",
@@ -3029,63 +3960,6 @@
 							"response": []
 						},
 						{
-							"name": "Create Wallet - MultiWallet different Currency",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"200 - Authorised Access\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"pm.test(\"Successful- Wallet is created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
-											"});\r",
-											"pm.test(\"(KES) Another Currency (kenya) is succesfully created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data.currencyId).to.eql(2);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"NairaWallet\",\r\n\"currency\" : \"KES\",\r\n\"user_ref\" : \"31\",\r\n\"lock_code\" : \"password\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Create Wallet - Ghana",
 							"event": [
 								{
@@ -3122,7 +3996,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"GhanaWallet\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"54\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3179,7 +4053,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"CameroonWallet\",\r\n\"currency\" : \"XAF\",\r\n\"user_ref\" : \"35\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"XAF\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3236,7 +4110,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"UgandaWallet\",\r\n\"currency\" : \"UGX\",\r\n\"user_ref\" : \"36\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"UGX\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3293,7 +4167,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"TanzaniaWallet\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"50\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3350,7 +4224,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"SouthAfricaWallet\",\r\n\"currency\" : \"ZAR\",\r\n\"user_ref\" : \"51\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"ZAR\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3403,7 +4277,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"12354\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"38\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"12354\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3430,8 +4304,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error (Currency not found)\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code)\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error- Wallet is not created\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -3456,7 +4330,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"    \",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"40\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \" \",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3509,7 +4383,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"&&&TazaniaWallet\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"41\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"&&&{{$randomFirstName}}\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3543,7 +4417,7 @@
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
 											"});\r",
-											"pm.test(\"(Invalid Name\", function () {\r",
+											"pm.test(\"Invalid Name\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.code).to.eql(\"INVALID_NAME\");\r",
 											"});"
@@ -3584,18 +4458,22 @@
 							"response": []
 						},
 						{
-							"name": "Create Wallet - WrongCurrency",
+							"name": "Create Wallet - Already Exists",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error (Currency not found)\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Returns Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
+											"pm.test(\"Error Wallet Not Created\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"(NGN) Naira Wallet is succesfully created\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.data.currencyId).to.eql(1);\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -3616,7 +4494,65 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"USDWallet\",\r\n\"currency\" : \"USD\",\r\n\"user_ref\" : \"66\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"NairaWallet\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"66\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Wallet - WrongCurrency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status Code Should be 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Error- Wallet is not created\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Currency Not Found\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.data).to.eql(\"Currency not found\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"XRP\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3644,7 +4580,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"500 - Internal Server Error (Currency not found)\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error- Wallet is not created\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -3673,7 +4609,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"AustraliaWallet\",\r\n\"currency\" : \"AUD\",\r\n\"user_ref\" : \"43\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"AUD\",\r\n\"user_ref\" : \"{{$randomInt}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3709,7 +4645,7 @@
 											"});\r",
 											"pm.test(\"(NGN) Wallet with Letter UserRef is succesfully created\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data.uref).to.eql(\"E\");\r",
+											"    pm.expect(jsonData.data.uref).not.empty\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -3730,121 +4666,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"LetterUserRef\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"G\",\r\n\"lock_code\" : \"password\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Wallet - String User_ref",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"200 - Authorised Access\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"pm.test(\"Successful- Wallet is created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
-											"});\r",
-											"pm.test(\"(NGN) Wallet with Letter UserRef is succesfully created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data.uref).to.eql(\"str\");\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"StringUserRef\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"str\",\r\n\"lock_code\" : \"password\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Wallet - UserRef is 0",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"200 - Authorised Access\", function () {\r",
-											"    pm.response.to.have.status(200);\r",
-											"});\r",
-											"pm.test(\"Successful- Wallet is created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
-											"});\r",
-											"pm.test(\"(NGN) Wallet with String UserRef is succesfully created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.data.uref).to.eql(\"0\");\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n\"name\" : \"StringUser\",\r\n\"currency\" : \"TZS\",\r\n\"user_ref\" : \"0\",\r\n\"lock_code\" : \"password\"\r\n}",
+									"raw": "{\r\n\"name\" : \"{{$randomFirstName}}\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"{{$randomFirstName}}\",\r\n\"lock_code\" : \"password\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3877,6 +4699,11 @@
 											"pm.test(\"Error- Wallet is not created\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Wallet Already Exists\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.data).to.eql(\"Wallet already exists. Check [user_ref]\");\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -4343,276 +5170,6 @@
 							"response": []
 						},
 						{
-							"name": "Create Walle - Double Wallet Created at once - Duplicate Information",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"400 - Bad Request\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n},\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n}\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Walle - Double Wallet Created at once - Different User_ref",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"400 - Bad Request\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n},\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"12\",\r\n\"lock_code\" : \"password\"\r\n}\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Walle - Double Wallet Created at once - Different Currency",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"400 - Bad Request\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n},\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"12\",\r\n\"lock_code\" : \"password\"\r\n}\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Walle - Double Wallet Created at once - Different Name",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"400 - Bad Request\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n},\r\n{\r\n\"name\" : \"AnotherName\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"12\",\r\n\"lock_code\" : \"password\"\r\n}\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Walle - Double Wallet Created at once - Different Password",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"400 - Bad Request\", function () {\r",
-											"    pm.response.to.have.status(400);\r",
-											"});\r",
-											"pm.test(\"Error- Wallet is not created\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "[\r\n{\r\n\"name\" : \"Duplicate\",\r\n\"currency\" : \"NGN\",\r\n\"user_ref\" : \"8\",\r\n\"lock_code\" : \"password\"\r\n},\r\n{\r\n\"name\" : \"Duplicate2\",\r\n\"currency\" : \"GHS\",\r\n\"user_ref\" : \"12\",\r\n\"lock_code\" : \"123456\"\r\n}\r\n]",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Wallet Balance -  Search By ID",
 							"event": [
 								{
@@ -4925,7 +5482,7 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{url}}/v1/wallet?currency=",
+									"raw": "{{url}}/v1/wallet?currency=XRP",
 									"host": [
 										"{{url}}"
 									],
@@ -4936,7 +5493,7 @@
 									"query": [
 										{
 											"key": "currency",
-											"value": ""
+											"value": "XRP"
 										}
 									]
 								}
@@ -5138,6 +5695,61 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Balance - Transfer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Gotten the right ID\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.data[0].id).to.eql(20745);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet?id=20745",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "20745"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -5151,6 +5763,9 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"cardref\", jsonData.data.transfer.flutterChargeReference);\r",
+											"\r",
 											"pm.test(\"OK - Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});\r",
@@ -5202,10 +5817,14 @@
 									"listen": "test",
 									"script": {
 										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"cardref\", jsonData.data.transfer.flutterChargeReference);\r",
+											"\r",
+											"\r",
 											"pm.test(\"OK - Status code is 200\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});\r",
-											"pm.test(\"Transfer is successful\", function () {\r",
+											"pm.test(\" Fund successful\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
 											"});\r",
@@ -5226,7 +5845,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstname\" : \"Johnney\",\r\n    \"lastname\"  : \"Cage\",\r\n    \"phonenumber\": \"+2348088730310\",\r\n    \"email\" : \"jamesohia4@gmail.com\",\r\n    \"amount\": \"500\",\r\n    \"card_no\": \" 4187427415564246\",\r\n    \"cvv\" : \"828\",\r\n    \"expiry_year\":\"32\",\r\n    \"expiry_month\":\"09\",\r\n    \"pin\": \"3310\",\r\n    \"redirecturl\":\"http://www.bts.com.ng\",\r\n    \"medium\": \"web\",\r\n    \"recipient\": \"wallet\"\r\n   \r\n}",
+									"raw": "{\r\n    \"firstname\" : \"Johnney\",\r\n    \"lastname\"  : \"Cage\",\r\n    \"phonenumber\": \"+2348165400230\",\r\n    \"email\" : \"ogechi.n@zenithcresttechnologies.com\",\r\n    \"amount\": \"50000\",\r\n    \"card_no\": \" 4187427415564246\",\r\n    \"cvv\" : \"828\",\r\n    \"expiry_year\":\"32\",\r\n    \"expiry_month\":\"09\",\r\n    \"pin\": \"3310\",\r\n    \"redirecturl\":\"http://www.bts.com.ng\",\r\n    \"medium\": \"web\",\r\n    \"recipient\": \"wallet\"\r\n   \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -5254,8 +5873,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Returns Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Transfer is unsuccessful\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6066,7 +6685,7 @@
 							"response": []
 						},
 						{
-							"name": "Fund with Cards -Using Letters as Numbers",
+							"name": "Fund with Cards -Using Letters as Amount",
 							"event": [
 								{
 									"listen": "test",
@@ -6289,8 +6908,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6398,8 +7017,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6424,7 +7043,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"firstname\" : \"James\",\r\n    \"lastname\"  : \"Ohia\",\r\n    \"phonenumber\": \"+2348088730310\",\r\n    \"email\" : \"jamesohia4@gmail.com\",\r\n    \"amount\": \"1000\",\r\n    \"card_no\": \" 5438898014560229\",\r\n    \"cvv\" : \"564\",\r\n    \"expiry_year\":\"452\",\r\n    \"expiry_month\":\"10\",\r\n    \"pin\": \"3310\",\r\n    \"redirecturl\": \"http://www.bts.com.ng\",\r\n    \"medium\": \"web\",\r\n    \"recipient\": \"wallet\"\r\n   \r\n}",
+									"raw": "{\r\n    \"firstname\" : \"James\",\r\n    \"lastname\"  : \"Ohia\",\r\n    \"phonenumber\": \"+2348088730310\",\r\n    \"email\" : \"jamesohia4@gmail.com\",\r\n    \"amount\": \"1000\",\r\n    \"card_no\": \" 5438898014560229\",\r\n    \"cvv\" : \"564\",\r\n    \"expiry_year\":\"203\",\r\n    \"expiry_month\":\"10\",\r\n    \"pin\": \"3310\",\r\n    \"redirecturl\": \"http://www.bts.com.ng\",\r\n    \"medium\": \"web\",\r\n    \"recipient\": \"wallet\"\r\n   \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -6560,8 +7179,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6720,8 +7339,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6772,8 +7391,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6824,8 +7443,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6876,8 +7495,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -6983,8 +7602,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -7090,8 +7709,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -7142,8 +7761,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -7249,8 +7868,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Return Error Code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Error - Couldn't fund account with card\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -7380,7 +7999,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"transaction_reference\" : \"FLW-MOCK-1623e2dbb11e6e8d9f5a614a4a6428b0\",\r\n    \"otp\" : \"12345\" \r\n}",
+									"raw": "{\r\n    \"transaction_reference\" : \"{{cardref}}\",\r\n    \"otp\" : \"12345\" \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -7571,6 +8190,60 @@
 							"response": []
 						},
 						{
+							"name": "Fund with Cards - Master Card(VBSecure) Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);\r",
+											"pm.environment.set(\"cardref\", jsonData.data.transfer.flutterChargeReference);\r",
+											"\r",
+											"pm.test(\"OK - Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Transfer is successful\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"success\");\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\" : \"James\",\r\n    \"lastname\"  : \"Ohia\",\r\n    \"phonenumber\": \"+2348088730310\",\r\n    \"email\" : \"jamesohia4@gmail.com\",\r\n    \"amount\": \"1000\",\r\n    \"card_no\": \" 5438898014560229\",\r\n    \"cvv\" : \"564\",\r\n    \"expiry_year\":\"31\",\r\n    \"expiry_month\":\"10\",\r\n    \"pin\": \"3310\",\r\n    \"redirecturl\": \"http://www.bts.com.ng\",\r\n    \"medium\": \"web\",\r\n    \"recipient\": \"wallet\"\r\n   \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/transfer/rave",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"transfer",
+										"rave"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Funds with Cards -Verify Charge -Invalid OTP",
 							"event": [
 								{
@@ -7604,7 +8277,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"transaction_reference\" : \"FLW-MOCK-28d22c7e0bd83e596d59cfa62255f116\",\r\n    \"otp\" : \"5443\" \r\n}",
+									"raw": "{\r\n    \"transaction_reference\" : \"{{cardref}}\",\r\n    \"otp\" : \"5443\" \r\n} ",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -7633,8 +8306,8 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
+											"pm.test(\"Error Code Returned\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
 											"});\r",
 											"pm.test(\"Verify Charge Unuccessful\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
@@ -7661,62 +8334,6 @@
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"transaction_reference\" : \"FLW-MOCK-20a17e8a1942b4daa320bef2e00e4a75\",\r\n    \"otp\" : \"String\" \r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/transfer/rave/otp",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"transfer",
-										"rave",
-										"otp"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Funds with Cards -Verify Charge -Using Alpha-numeric characters for OTP",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"500 - Internal Server Error\", function () {\r",
-											"    pm.response.to.have.status(500);\r",
-											"});\r",
-											"pm.test(\"Verify Charge Unuccessful\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
-											"});\r",
-											"pm.test(\"OTP is numeric only\", function () {\r",
-											"    var jsonData = pm.response.json();\r",
-											"    pm.expect(jsonData.message).to.eql(\"OTP Must be numeric\");\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"transaction_reference\" : \"FLW-MOCK-20a17e8a1942b4daa320bef2e00e4a75\",\r\n    \"otp\" : \"1234String\" \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -7994,7 +8611,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"phonenumber\" : \"+23494614000\",\r\n    \"bankCode\" : \"221\",\r\n    \"amount\" : \"1000\"\r\n}",
+									"raw": "{\r\n    \"phonenumber\" : \"+2348088730310\",\r\n    \"bankCode\" : \"044\",\r\n    \"amount\" : 1000\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -8083,6 +8700,11 @@
 											"pm.test(\"Error - Couldn't Fund via USSD\", function () {\r",
 											"    var jsonData = pm.response.json();\r",
 											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Invalid Phone number\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.eql(\"INVALID_PHONENUMBER\");\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -8626,11 +9248,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{WaveUrl}}/transfer/ussd",
+									"raw": "{{url}}/v1/transfer/ussd",
 									"host": [
-										"{{WaveUrl}}"
+										"{{url}}"
 									],
 									"path": [
+										"v1",
 										"transfer",
 										"ussd"
 									]
@@ -9204,12 +9827,303 @@
 					]
 				},
 				{
-					"name": "How to Fund",
-					"item": []
-				},
-				{
 					"name": "Check Funding Status",
-					"item": []
+					"item": [
+						{
+							"name": "Check Funding Status - Successful",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/v1/fund/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"fund",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Payout Status - No Authorization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"pm.test(\"Status is error\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.equal(\"Unauthorized access.\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ref\": \"MXSETT10\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/fund/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"fund",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Payout Status - Invalid Authorization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"pm.test(\"Status is error\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.equal(\"Invalid or expired token\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "jhchjhckhckhvjuv ",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"MXSETT10\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/fund/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"fund",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Payout Status - Expired Authorization",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"pm.test(\"Status is error\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"Return Message Unauthorized Access\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.equal(\"Invalid or expired token\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRocml2ZSIsImFjY291bnROdW1iZXIiOiIwNjkwMDAwMDAiLCJiYW5rQ29kZSI6IjMwNyIsImlzQWN0aXZlIjp0cnVlLCJlbnZpcm9ubWVudCI6ImxpdmUiLCJjYW5fZ29saXZlIjp0cnVlLCJjb3VudGRvd24iOm51bGwsImNvbXBsaWFuY2UiOjAsImNvZGUiOiJNMSIsInBvc0lkIjoiUDEiLCJlYmlsbElkIjpudWxsLCJpcCI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxNi0wOS0xNlQxMzo0OToyMy4wMDBaIiwidXBkYXRlZEF0IjoiMjAxOC0wMi0wOVQxNDozMDo0Ny4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJpYXQiOjE1MzAwMzA2OTcsImV4cCI6MTUzMDAzNzg5N30.zsMrcFJPpg2-H_b3Hr3Rn7pqaQhdYSGTpxO8wPR6TUg",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"MXSETT10\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/fund/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"fund",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Payout Status - No Ref",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Status is errro\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"Appropriate Code Displayed\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.code).to.equal(\"INVALID_REF\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"ref\": \"\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/fund/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"fund",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Check Payout Status - Invalid Ref",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Status is error\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.status).to.eql(\"error\");\r",
+											"});\r",
+											"pm.test(\"Payout is disbursed\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.data).to.contain( \"Disburse Transaction not Found\")\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ref\": \"MWT000013210510131900000126150675\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/disburse/status",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"disburse",
+										"status"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
@@ -9221,6 +10135,31 @@
 					"item": [
 						{
 							"name": "Search/List - Successful No Query",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).not.empty",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9313,6 +10252,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Page",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.meta.page).eql(1)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9323,7 +10287,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?page=2",
+									"raw": "{{url}}/v1/report/transactions?page=1",
 									"host": [
 										"{{url}}"
 									],
@@ -9335,7 +10299,7 @@
 									"query": [
 										{
 											"key": "page",
-											"value": "2"
+											"value": "1"
 										}
 									]
 								}
@@ -9344,6 +10308,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Limit",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.meta.limit).eql(1)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9354,7 +10343,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?limit=D",
+									"raw": "{{url}}/v1/report/transactions?limit=1",
 									"host": [
 										"{{url}}"
 									],
@@ -9366,7 +10355,7 @@
 									"query": [
 										{
 											"key": "limit",
-											"value": "D"
+											"value": "1"
 										}
 									]
 								}
@@ -9375,6 +10364,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Single  Date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].createdAt).contains(\"2021-08-18\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9385,7 +10399,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?date=2021-02-02",
+									"raw": "{{url}}/v1/report/transactions?date=2021-08-18",
 									"host": [
 										"{{url}}"
 									],
@@ -9397,7 +10411,7 @@
 									"query": [
 										{
 											"key": "date",
-											"value": "2021-02-02"
+											"value": "2021-08-18"
 										}
 									]
 								}
@@ -9406,6 +10420,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Single  Date Range",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].createdAt).contains(\"2021-08-18\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9416,7 +10455,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?date=2021-05-01-2021-05-20",
+									"raw": "{{url}}/v1/report/transactions?date=2021-08-18--2021-08-19",
 									"host": [
 										"{{url}}"
 									],
@@ -9428,7 +10467,7 @@
 									"query": [
 										{
 											"key": "date",
-											"value": "2021-05-01-2021-05-20"
+											"value": "2021-08-18--2021-08-19"
 										}
 									]
 								}
@@ -9437,6 +10476,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].status).eql(\"completed\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9447,7 +10511,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?status=",
+									"raw": "{{url}}/v1/report/transactions?status=completed",
 									"host": [
 										"{{url}}"
 									],
@@ -9459,7 +10523,7 @@
 									"query": [
 										{
 											"key": "status",
-											"value": ""
+											"value": "completed"
 										}
 									]
 								}
@@ -9468,6 +10532,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Amount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].amount).eql(6000)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9478,7 +10567,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?amount=",
+									"raw": "{{url}}/v1/report/transactions?amount=6000",
 									"host": [
 										"{{url}}"
 									],
@@ -9490,7 +10579,7 @@
 									"query": [
 										{
 											"key": "amount",
-											"value": ""
+											"value": "6000"
 										}
 									]
 								}
@@ -9499,6 +10588,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Ref",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].ref).eql(\"MXSETT10\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9509,7 +10623,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?ref=",
+									"raw": "{{url}}/v1/report/transactions?ref=MXSETT10",
 									"host": [
 										"{{url}}"
 									],
@@ -9521,7 +10635,7 @@
 									"query": [
 										{
 											"key": "ref",
-											"value": ""
+											"value": "MXSETT10"
 										}
 									]
 								}
@@ -9530,6 +10644,28 @@
 						},
 						{
 							"name": "Search/List - Successful Query With FLWRef",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9561,6 +10697,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Currency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"200 - Authorised Access\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Status Is Success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"success\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data[0].currencyId).eql(1)",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9623,6 +10784,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Currency Not Listed",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status Code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Status Return Error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"error\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).contains(\"Invalid Currency\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9654,6 +10840,31 @@
 						},
 						{
 							"name": "Search/List - Successful Query With Invalid Currency",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status Code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"pm.test(\"Status Return Error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).eql(\"error\")",
+											"});",
+											"",
+											"",
+											"",
+											"pm.test(\"Data Returned\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).contains(\"Invalid Currency\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -9880,7 +11091,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{url}}/v1/report/transactions?wallet=",
+									"raw": "{{url}}/v1/report/transactions?wallet=Credit",
 									"host": [
 										"{{url}}"
 									],
@@ -9892,7 +11103,7 @@
 									"query": [
 										{
 											"key": "wallet",
-											"value": ""
+											"value": "Credit"
 										}
 									]
 								}
@@ -9950,7 +11161,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"jpt\",\n  \"lock_code\": \"066\",\n  \"user_ref\": \"043992\",\n  \"currency\": \"GHS\"\n}",
+									"raw": "{\n  \"name\": \"{{$randomAbbreviation}}\",\n  \"lock_code\": \"1234\",\n  \"user_ref\": \"{{$randomInt}}\",\n  \"currency\": \"NGN\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -10011,7 +11222,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"0690000034\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"145678902\",\n  \"currency\": \"GHS\"\n}",
+									"raw": "{\n  \"name\": \"{{$randomAbbreviation}}\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"{{$randomInt}}\",\n  \"currency\": \"GHS\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -10072,7 +11283,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"0690000034\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"145678902\",\n  \"currency\": \"KES\"\n}",
+									"raw": "{\n  \"name\": \"{{$randomAbbreviation}}\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"{{$RandomInt}}\",\n  \"currency\": \"KES\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -10133,7 +11344,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"0690000034\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"145678902\",\n  \"currency\": \"SLL\"\n}",
+									"raw": "{\n  \"name\": \"0690000034\",\n  \"lock_code\": \"044\",\n  \"user_ref\": \"145678902\",\n  \"currency\": \"GHS\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -10222,24 +11433,21 @@
 									"listen": "test",
 									"script": {
 										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
 											"});",
 											"",
 											"",
 											"pm.test(\"Status returned is success\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
 											"});",
 											"",
-											"pm.test(\"Account Created\", function () {",
-											"    pm.expect(pm.response.text()).to.include(\"createdAt\");",
-											"});",
-											"",
-											"pm.test(\"Returns Data\", function () {",
+											"pm.test(\"Duplicate Name\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.data).to.not.empty;",
-											"});"
+											"    pm.expect(jsonData.data).to.contain(\"Wallet already exists.\")});",
+											"",
+											""
 										],
 										"type": "text/javascript"
 									}
@@ -11688,9 +12896,34 @@
 					"name": "Transfer Balance",
 					"item": [
 						{
-							"name": "Transfer Balance - Successful No Body",
+							"name": "Transfer Balance - Successful",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Transfer Successful Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.eql(\"Transfer Successful\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -11698,6 +12931,15 @@
 										"type": "text"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"narration\":\"see\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/wallet/transfer",
 									"host": [
@@ -11713,12 +12955,34 @@
 							"response": []
 						},
 						{
-							"name": "Transfer Balance - Successful All Parameters",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
+							"name": "Transfer Balance - Successful No Narration",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is success\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"success\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Transfer Successful Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.eql(\"Transfer Successful\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -11728,7 +12992,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"sourceWallet\": \"\",\n  \"recipientWallet\": \"\",\n  \"amount\": \"\",\n  \"currency\": \"\",\n  \"lock\": \"\"\n}",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -11750,315 +13014,34 @@
 							"response": []
 						},
 						{
-							"name": "Transfer Balance - Successful With SourceWallet",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
+							"name": "Transfer Balance - Insufficient Amount",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"TWallet balance is not sufficient is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.data).to.eql(\"Wallet balance is not sufficient\")",
+											"});"
+										],
+										"type": "text/javascript"
 									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"sourceWallet\": \"\"\n  }\n\n  ",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									],
-									"query": [
-										{
-											"key": "sourceWallet",
-											"value": null,
-											"disabled": true
-										}
-									]
 								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Invalid SourceWallet",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
+							],
 							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"sourceWallet\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With ReceipientWallet",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \n  \"recipientWallet\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Invalid ReceipientWallet",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \n  \"recipientWallet\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Amount",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"amount\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With No Amount",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"amount\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Currency",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"currency\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Invalid Currency",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"currency\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Currency Code Not Listed",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
@@ -12068,7 +13051,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"currency\": \"\"\n}",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"20000\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -12090,120 +13073,50 @@
 							"response": []
 						},
 						{
-							"name": "Transfer Balance - Successful With LockCode",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"lock\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Successful With Invalid LockCode",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "{{token}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"lock\": \"\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{url}}/v1/wallet/transfer",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"v1",
-										"wallet",
-										"transfer"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Transfer Balance - Incorrect Token",
+							"name": "Transfer Balance - Amount is 0",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
-											"    pm.response.to.have.status(401);",
+											"    pm.response.to.have.status(400);",
 											"});",
+											"",
 											"",
 											"pm.test(\"Status returned is error\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.status).to.eql(\"error\");",
 											"});",
 											"",
-											"pm.test(\"Correct message\", function () {",
-											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.message).to.eql(\"Invalid or expired token\");",
-											"});",
 											"",
-											"pm.test(\"Correct code\", function () {",
+											"pm.test(\"Amount is Invalid is Displayed\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.code).to.eql(\"UNAUTHORIZED_ACCESS\");",
-											"});",
-											"",
-											""
+											"    pm.expect(jsonData.message).to.eql(\"Amount is Invalid\")",
+											"});"
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "xhJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRocml2ZSIsImFjY291bnROdW1iZXIiOiIwNjkwMDAwMDAiLCJiYW5rQ29kZSI6IjMwNyIsImlzQWN0aXZlIjp0cnVlLCJlbnZpcm9ubWVudCI6ImxpdmUiLCJjYW5fZ29saXZlIjp0cnVlLCJjb3VudGRvd24iOm51bGwsImNvbXBsaWFuY2UiOjAsImNvZGUiOiJNMSIsInBvc0lkIjoiUDEiLCJlYmlsbElkIjpudWxsLCJpcCI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxNi0wOS0xNlQxMzo0OToyMy4wMDBaIiwidXBkYXRlZEF0IjoiMjAxOC0wMi0wOVQxNDozMDo0Ny4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJpYXQiOjE1MzAwMzA2OTcsImV4cCI6MTUzMDAzNzg5N30.zsMrcFJPpg2-H_b3Hr3Rn7pqaQhdYSGTpxO8wPR6TFg",
-										"type": "text"
+										"type": "text",
+										"value": "{{token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"0\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/wallet/transfer",
 									"host": [
@@ -12219,46 +13132,522 @@
 							"response": []
 						},
 						{
-							"name": "Transfer Balance - Expired Token",
+							"name": "Transfer Balance - No Amount",
 							"event": [
 								{
 									"listen": "test",
 									"script": {
 										"exec": [
 											"pm.test(\"Status code is 400\", function () {",
-											"    pm.response.to.have.status(401);",
+											"    pm.response.to.have.status(400);",
 											"});",
+											"",
 											"",
 											"pm.test(\"Status returned is error\", function () {",
 											"    var jsonData = pm.response.json();",
 											"    pm.expect(jsonData.status).to.eql(\"error\");",
 											"});",
 											"",
-											"pm.test(\"Correct message\", function () {",
-											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.message).to.eql(\"Invalid or expired token\");",
-											"});",
 											"",
-											"pm.test(\"Correct code\", function () {",
+											"pm.test(\"Amount is Invalid is Displayed\", function () {",
 											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.code).to.eql(\"UNAUTHORIZED_ACCESS\");",
-											"});",
-											"",
-											""
+											"    pm.expect(jsonData.message).to.contain(\"Disburse Amount is required\")",
+											"});"
 										],
 										"type": "text/javascript"
 									}
 								}
 							],
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlRocml2ZSIsImFjY291bnROdW1iZXIiOiIwNjkwMDAwMDAiLCJiYW5rQ29kZSI6IjMwNyIsImlzQWN0aXZlIjp0cnVlLCJlbnZpcm9ubWVudCI6ImxpdmUiLCJjYW5fZ29saXZlIjp0cnVlLCJjb3VudGRvd24iOm51bGwsImNvbXBsaWFuY2UiOjAsImNvZGUiOiJNMSIsInBvc0lkIjoiUDEiLCJlYmlsbElkIjpudWxsLCJpcCI6bnVsbCwiY3JlYXRlZEF0IjoiMjAxNi0wOS0xNlQxMzo0OToyMy4wMDBaIiwidXBkYXRlZEF0IjoiMjAxOC0wMi0wOVQxNDozMDo0Ny4wMDBaIiwiZGVsZXRlZEF0IjpudWxsLCJpYXQiOjE1MzAwMzA2OTcsImV4cCI6MTUzMDAzNzg5N30.zsMrcFJPpg2-H_b3Hr3Rn7pqaQhdYSGTpxO8wPR6TUg",
-										"type": "text"
+										"type": "text",
+										"value": "{{token}}"
 									}
 								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - No Source Wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Request Failed Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Request Failed.\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - Invalid Source Wallet ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Request Failed Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Request Failed.\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"5555\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - No Recipient Wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Destination Wallet not found is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.eql(\"Destination Wallet not found\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - Invalid Recipient Wallet Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Destination Wallet not found is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.eql(\"Destination Wallet not found\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"67444\",\n\"amount\":\"2\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - No Currency Tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Currency is required Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Currency is required\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - Invalid Currency Tag",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Currency not found Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Currency not found\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"XRP\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - Currency Tag Does Not Match Source Wallet",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Source Wallet not found Is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Source Wallet not found\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"2\",\n\"currency\":\"GHS\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/v1/wallet/transfer",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"v1",
+										"wallet",
+										"transfer"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transfer Balance - No Amount Copy 3",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {",
+											"    pm.response.to.have.status(400);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Status returned is error\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.status).to.eql(\"error\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Amount is Invalid is Displayed\", function () {",
+											"    var jsonData = pm.response.json();",
+											"    pm.expect(jsonData.message).to.contain(\"Disburse Amount is required\")",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\"sourceWallet\":\"0\",\n\"recipientWallet\":\"401\",\n\"amount\":\"\",\n\"currency\":\"NGN\",\n\"lock\":\"1234\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
 									"raw": "{{url}}/v1/wallet/transfer",
 									"host": [
@@ -12744,7 +14133,76 @@
 			"item": []
 		},
 		{
-			"name": "Account Resolve",
+			"name": "POS",
+			"item": [
+				{
+					"name": "Bank and Destination - Resolve Account - Successful NG Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status returned is success\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"success\");",
+									"});",
+									"",
+									"pm.test(\"Account Information Displayed\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.data).not.empty;",
+									"});",
+									"pm.test(\"account name fetched\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"account_name\");",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"account_number\": \"0690000034\",\n  \"bank_code\": \"044\",\n  \"currency\": \"NGN\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/resolve/account",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"resolve",
+								"account"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Endpoints for Flutterwave POS\n"
+		},
+		{
+			"name": "Link Card",
 			"request": {
 				"method": "GET",
 				"header": [],
