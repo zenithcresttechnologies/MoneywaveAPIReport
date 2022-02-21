@@ -50,6 +50,6 @@ jobs:
       env:
        SLACK_TITLE: API Test Status
        SLACK_USERNAME: Adewale
-       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }} # required
+       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }} # required
        
        
