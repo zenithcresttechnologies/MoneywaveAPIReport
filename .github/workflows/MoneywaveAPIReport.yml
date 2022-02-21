@@ -39,20 +39,17 @@ jobs:
        name: RunReports
        path: testResults
        
-   #J Unit Report
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always()
-      with:
-       files: testResults/**/*.xml
+
        
    # SLack Notification
     - name: Send Slack Notification
-      uses: ravsamhq/notify-slack-action@v1
+      uses: rtCamp/action-slack-notify@v2
       if: always()
       with:
        status: ${{ job.status }} # required
       env:
+       SLACK_TITLE: API Test Status
+       SLACK_USERNAME: Adewale
        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
        
        
