@@ -26,7 +26,7 @@ jobs:
       run: mkdir -p MoneywaveTestReport
 
 
-    # Run the POSTMAN collection
+    # Run the POSTMAN collection With Report
     - name: Run POSTMAN collection
       run: newman run MoneyWave.postman_collection.json -e Moneywave.postman_environment.json -r htmlextra --reporter-htmlextra-export MoneywaveTestReport/htmlreport.html --reporter-htmlextra-darkTheme  > MoneywaveTestReport/runreport1.html
 
